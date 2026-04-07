@@ -1,6 +1,7 @@
 package spentenergy
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -14,16 +15,63 @@ const (
 
 func WalkingSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
 	// TODO: реализовать функцию
+	if steps <= 0 {
+		return 0.00, fmt.Errorf("количество шагов должно быть больше 0")
+	}
+	if weight <= 0 {
+		return 0.00, fmt.Errorf("вес должен быть больше 0")
+	}
+	if height <= 0 {
+		return 0.00, fmt.Errorf("рост должен быть больше 0")
+	}
+	if duration <= 0 {
+		return 0.00, fmt.Errorf("продолжительность должна быть больше 0")
+	}
+	avarageSpeed := MeanSpeed(steps, height, duration)
+	durationInMinutes := duration.Minutes()
+	spentCalories := (weight * avarageSpeed * durationInMinutes) / minInH
+	walkingSpentCalories := spentCalories * walkingCaloriesCoefficient
+	return walkingSpentCalories, nil
 }
 
 func RunningSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
 	// TODO: реализовать функцию
+	if steps <= 0 {
+		return 0.00, fmt.Errorf("количество шагов должно быть больше 0")
+	}
+	if weight <= 0 {
+		return 0.00, fmt.Errorf("вес должен быть больше 0")
+	}
+	if height <= 0 {
+		return 0.00, fmt.Errorf("рост должен быть больше 0")
+	}
+	if duration <= 0 {
+		return 0.00, fmt.Errorf("продолжительность должна быть больше 0")
+	}
+	avarageSpeed := MeanSpeed(steps, height, duration)
+	durationInMinutes := duration.Minutes()
+	spentCalories := (weight * avarageSpeed * durationInMinutes) / minInH
+	return spentCalories, nil
 }
 
 func MeanSpeed(steps int, height float64, duration time.Duration) float64 {
 	// TODO: реализовать функцию
+	if steps <= 0 {
+		return 0
+	}
+	if duration <= 0 {
+		return 0
+	}
+	durationInHours := duration.Hours()
+	distance := Distance(steps, height)
+	averageSpeed := distance / durationInHours
+	return averageSpeed
 }
 
 func Distance(steps int, height float64) float64 {
 	// TODO: реализовать функцию
+	stepLength := height * stepLengthCoefficient
+	way := stepLength * float64(steps)
+	distanceInKm := way / mInKm
+	return distanceInKm
 }
